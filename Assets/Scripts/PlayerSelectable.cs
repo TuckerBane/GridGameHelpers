@@ -5,6 +5,8 @@ using UnityEngine;
 public delegate void UpdateFunction();
 public delegate bool SquareEvaluator(GridSquare square, GridSquare prevSquare);
 
+public enum PlayerID {PlayerOne, PlayerTwo, PlayerThree, PlayerFour, EnemyPlayer };
+
 // No data. Would be a namespace in C++
 public class Disqualifiers
 {
@@ -37,6 +39,8 @@ public class PlayerSelectable : MonoBehaviour {
 
     IntVec2 mPositionRef { get { return GetComponent<OnGrid>().mPosition; } set { GetComponent<OnGrid>().mPosition = value; } }
     public int mSpeed = 3;
+    public bool mTurnTaken = false;
+    public PlayerID mPlayerID;
 
     List<GridSquare> mMoveOptions;
 
@@ -70,6 +74,13 @@ public class PlayerSelectable : MonoBehaviour {
 
     void PlayerSelectedUpdate(PlayerTurn playerTurn)
     {
+        if (mTurnTaken)
+        {
+            // deselect this unit
+            playerTurn.mSelectedEntity = null; 
+            // LATER provide feedback for what happened
+            return;
+        }
         if (mSpeed < 0)
             return;
 
@@ -108,10 +119,10 @@ public class PlayerSelectable : MonoBehaviour {
             {
                 grid.PlaceOnGrid(gameObject, hoveredGridSquare.mPositionRef);
                 // deselect this unit
-                playerTurn.mSelectedEntity = null; 
+                playerTurn.DeselectAll();
+                mTurnTaken = true;
             }
         }
-
 
         mGridRef.ResetPathfindingData();
     }

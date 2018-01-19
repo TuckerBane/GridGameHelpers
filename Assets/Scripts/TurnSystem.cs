@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+// should probably be an interface
 public class Turn
 {
     public Turn(string name) {
-        Reset();
         mName = name;
     }
     public virtual bool Update() { return true; }
@@ -22,14 +21,18 @@ public class TurnSystem : MonoBehaviour {
 
     public List<Turn> mTurnOrder;
     public int currentTurn = 0;
+    public UnitInfo mPlayer1Units;
+    public UnitInfo mPlayer2Units;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         mTurnOrder = new List<Turn>();
-        mTurnOrder.Add(new PlayerTurn());
+        mTurnOrder.Add(new Turn("round start"));
+        mTurnOrder.Add(new PlayerTurn(mPlayer1Units, PlayerID.PlayerOne));
         Turn cleanup = new Turn("between turn cleanup");
         mTurnOrder.Add(cleanup);
         mTurnOrder.Add(new Turn("enemy turn"));
+        mTurnOrder.Add(new PlayerTurn(mPlayer2Units, PlayerID.PlayerTwo));
         mTurnOrder.Add(cleanup);
 
     }
@@ -41,8 +44,6 @@ public class TurnSystem : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
-
 
         if (mTurnOrder[currentTurn].Update() || Input.GetKeyDown("space"))
         {

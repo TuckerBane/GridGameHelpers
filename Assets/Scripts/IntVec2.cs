@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-
+[System.Serializable]
 public struct IntVec2
 {
+    [SerializeField]
     public int x;
+    [SerializeField]
     public int y;
 
     public IntVec2(int xnew, int ynew)

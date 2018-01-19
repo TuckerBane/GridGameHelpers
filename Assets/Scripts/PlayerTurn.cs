@@ -3,9 +3,10 @@ using System.Collections;
 
 public class PlayerTurn : Turn
 {
-    public PlayerTurn() : base("Player turn") { }
+    public PlayerTurn( UnitInfo units, PlayerID player) : base("Player turn") { mMyUnits = units; mPlayerID = player; }
 
-    public IntVec2 mFirstSquare = new IntVec2(-1337, -1337);
+    public UnitInfo mMyUnits;
+    PlayerID mPlayerID;
 
     GameObject mSelectedSquare = null;
     public GameObject mSelectedEntity = null;
@@ -17,6 +18,9 @@ public class PlayerTurn : Turn
             mSelectedEntity.SendMessage("PlayerSelectedUpdate", this);
             return false;
         }
+        // if all the units have moved the turn is over (good enough for now)
+        if (mMyUnits.mNextInTurnOrder == null)
+            return true;
 
         var grid = GameObject.FindObjectOfType<GridLogic>();
         GameObject hovered = null;
@@ -27,24 +31,22 @@ public class PlayerTurn : Turn
             hovered.GetComponent<Highlightable>().setHighlighted(true, 0.01f);
 
         if (Input.GetKeyUp(KeyCode.Mouse0) && hovered && hovered.GetComponent<OnGrid>()) {
-            if (mFirstSquare.x == -1337.0f)
+            if (hovered)
             {
-                if (hovered)
+                DeselectAll();
+                mSelectedSquare = hovered;
+                IntVec2 selectedPos = mSelectedSquare.GetComponent<OnGrid>().GetPosition();
+                mSelectedEntity = grid.GetGridContents(selectedPos);
+                if (mSelectedEntity && mSelectedEntity.GetComponent<PlayerSelectable>() && mSelectedEntity.GetComponent<PlayerSelectable>().mPlayerID == mPlayerID)
                 {
-                    mSelectedSquare = hovered;
-                    mFirstSquare = mSelectedSquare.GetComponent<OnGrid>().GetPosition();
-                    mSelectedEntity = grid.GetGridContents(mFirstSquare);
                     if (mSelectedSquare.GetComponent<Highlightable>())
                         mSelectedSquare.GetComponent<Highlightable>().setHighlighted(true, float.MaxValue);
                 }
-            }
-            else
-            {
-                if (mSelectedSquare.GetComponent<Highlightable>())
-                    mSelectedSquare.GetComponent<Highlightable>().setHighlighted(false);
-                var secondSquare = hovered.GetComponent<OnGrid>().GetPosition();
-                grid.SwapGridContents(mFirstSquare, secondSquare);
-                return true;
+                else
+                {
+                    DeselectAll();
+                }
+
             }
         }
 
@@ -53,8 +55,16 @@ public class PlayerTurn : Turn
 
     public override void Reset()
     {
-        mFirstSquare = new IntVec2(-1337, -1337);
+        mMyUnits.RefreshUnits();
         mSelectedEntity = null;
         mSelectedSquare = null;
+    }
+
+    public void DeselectAll()
+    {
+        if (mSelectedSquare && mSelectedSquare.GetComponent<Highlightable>())
+            mSelectedSquare.GetComponent<Highlightable>().setHighlighted(false);
+        mSelectedSquare = null;
+        mSelectedEntity = null;
     }
 };
