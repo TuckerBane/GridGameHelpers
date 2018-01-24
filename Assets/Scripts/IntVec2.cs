@@ -15,7 +15,10 @@ public struct IntVec2
     { x = xnew; y = ynew; }
 
     public static implicit operator IntVec2(Vector2 rhs)
-    {return new IntVec2((int)rhs.x, (int)rhs.y);}
+    { return new IntVec2( Mathf.RoundToInt(rhs.x), Mathf.RoundToInt(rhs.y) ); }
+
+    public static implicit operator IntVec2(Vector3 rhs)
+    { return new IntVec2( Mathf.RoundToInt(rhs.x), Mathf.RoundToInt(rhs.y) ); }
 
     void Zero() { x = 0; y = 0; }
 

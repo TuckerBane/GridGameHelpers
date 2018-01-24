@@ -46,15 +46,21 @@ public class GridLogic : MonoBehaviour {
 
     // Use this for initialization
     public void Start () {
+        MakeGrid();
+    }
+
+
+    public void MakeGrid()
+    {
         mGridSqiares = new GridSquare[mXSize, mYSize];
 
         for (int x = 0; x < mXSize; ++x)
         {
             for (int y = 0; y < mYSize; ++y)
             {
-                mGridSqiares[x,y] = new GridSquare();
-                mGridSqiares[x,y].mSquare = Instantiate(mGridSquarePrefab, new Vector3(x, y, transform.position.z), new Quaternion());
-                mGridSqiares[x,y].mSquare.GetComponent<OnGrid>().mPosition = new IntVec2(x, y);
+                mGridSqiares[x, y] = new GridSquare();
+                mGridSqiares[x, y].mSquare = Instantiate(mGridSquarePrefab, new Vector3(x, y, transform.position.z), new Quaternion());
+                mGridSqiares[x, y].mSquare.GetComponent<OnGrid>().mPosition = new IntVec2(x, y);
             }
         }
 

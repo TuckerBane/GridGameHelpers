@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class BeOnGrid : MonoBehaviour {
 
-    public IntVec2 mPlaceToGo;
-	
-	// Update is called once per frame
-	void Update () {
+    private IntVec2 mPlaceToGo;
+
+    private void Start()
+    {
+        mPlaceToGo = transform.position;
+    }
+
+    // Update is called once per frame
+    void Update () {
         FindObjectOfType<GridLogic>().PlaceOnGrid(this.gameObject, mPlaceToGo);
         Destroy(this);
 	}
