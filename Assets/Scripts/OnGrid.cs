@@ -4,7 +4,27 @@ using UnityEngine;
 
 public class OnGrid : MonoBehaviour {
 
-    public IntVec2 mPosition = new IntVec2 ( -1337, -1337 );
+    private GridLogic mMyGrid;
+
+    private void Start()
+    {
+        mMyGrid = FindObjectOfType<GridLogic>();
+    }
+
+    [SerializeField]
+    private IntVec2 mRealPosition;
+
+    public IntVec2 mPosition
+    {
+        get{ return mRealPosition; }
+        set{ mMyGrid.PlaceOnGrid(gameObject, value); }
+    }
+
+    // only for use in GridLogic
+    public void HardSetPosition(IntVec2 val)
+    {
+        mRealPosition = val;
+    }
 
     public IntVec2 GetPosition()
     {

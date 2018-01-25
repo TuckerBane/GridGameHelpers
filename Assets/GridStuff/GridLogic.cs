@@ -60,7 +60,7 @@ public class GridLogic : MonoBehaviour {
             {
                 mGridSqiares[x, y] = new GridSquare();
                 mGridSqiares[x, y].mSquare = Instantiate(mGridSquarePrefab, new Vector3(x, y, transform.position.z), new Quaternion());
-                mGridSqiares[x, y].mSquare.GetComponent<OnGrid>().mPosition = new IntVec2(x, y);
+                mGridSqiares[x, y].mSquare.GetComponent<OnGrid>().HardSetPosition(new IntVec2(x, y) );
             }
         }
 
@@ -88,10 +88,10 @@ public class GridLogic : MonoBehaviour {
         place.x = Mathf.Clamp(place.x, 0, mXSize - 1);
         place.y = Mathf.Clamp(place.y, 0, mYSize - 1);
 
-        if (thingToPlace.GetComponent<OnGrid>().mPosition.x != -1337)
+        if (thingToPlace.GetComponent<OnGrid>().mPosition != IntVec2.Invalid)
             RemoveFromGrid(thingToPlace);
 
-        thingToPlace.GetComponent<OnGrid>().mPosition = place;
+        thingToPlace.GetComponent<OnGrid>().HardSetPosition(place);
 
         if (mGridSqiares[place.x, place.y].mContents != null)
             Debug.LogWarning("placed something in a full space");
@@ -103,29 +103,8 @@ public class GridLogic : MonoBehaviour {
     public void RemoveFromGrid(GameObject thingToRemove)
     {
         IntVec2 place = thingToRemove.GetComponent<OnGrid>().mPosition;
-        thingToRemove.GetComponent<OnGrid>().mPosition.x = -1337;
-        thingToRemove.GetComponent<OnGrid>().mPosition.y = -1337;
+        thingToRemove.GetComponent<OnGrid>().HardSetPosition(IntVec2.Invalid);
         mGridSqiares[place.x,place.y].mContents = null;
-    }
-
-    public void SwapGridContents(IntVec2 pos1, IntVec2 pos2)
-    {
-        GameObject temp = mGridSqiares[pos1.x, pos1.y].mContents;
-        mGridSqiares[pos1.x, pos1.y].mContents = mGridSqiares[pos2.x, pos2.y].mContents;
-        mGridSqiares[pos2.x, pos2.y].mContents = temp;
-
-        if(mGridSqiares[pos1.x, pos1.y].mContents)
-        {
-            mGridSqiares[pos1.x, pos1.y].mContents.GetComponent<OnGrid>().mPosition = pos1;
-        }
-
-        if (mGridSqiares[pos2.x, pos2.y].mContents)
-        {
-            mGridSqiares[pos2.x, pos2.y].mContents.GetComponent<OnGrid>().mPosition = pos2;
-        }
-
-        MatchObjectLocationToGridLocation(pos1);
-        MatchObjectLocationToGridLocation(pos2);
     }
 
     public GameObject GetGridContents(IntVec2 pos)

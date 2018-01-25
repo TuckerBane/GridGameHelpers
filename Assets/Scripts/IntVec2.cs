@@ -35,6 +35,18 @@ public struct IntVec2
 
     public static implicit operator Vector2(IntVec2 me) { return new Vector2(me.x, me.y); }
 
+    public static bool operator ==(IntVec2 lhs, IntVec2 rhs)
+    {
+        return lhs.x == rhs.x && lhs.y == rhs.y;
+    }
+
+    public static bool operator !=(IntVec2 lhs, IntVec2 rhs)
+    {
+        return !(lhs == rhs);
+    }
+
+    public static IntVec2 Invalid = new IntVec2(-1337, -1337);
+
 };
 
 
