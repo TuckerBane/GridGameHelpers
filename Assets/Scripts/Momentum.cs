@@ -95,7 +95,7 @@ public class Momentum : MonoBehaviour {
             mVelocityLeftToApply = new IntVec2(-mVelocityLeftToApply.x, mVelocityLeftToApply.y);
             mVelocity.x *= -1;
         }
-        if (delta.x != newDirection.y)
+        if (delta.y != newDirection.y)
         {
             baseVelocityDelta.y *= -1;
             mVelocityLeftToApply = new IntVec2(mVelocityLeftToApply.x, -mVelocityLeftToApply.y);
@@ -122,7 +122,7 @@ public class Momentum : MonoBehaviour {
         {
 
             mDirectionIndex = GetDirectionIndex(delta);
-            // diaginal
+            // diagonal
             if(mDirectionIndex % 2 == 1)
             {
                 bool clockwiseBlocked = mGridLogicRef.GetGridSquare(mMyOnGrid.mPosition + mDirections[ (mDirectionIndex + 1) % 8]).mContents != null;
