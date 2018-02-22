@@ -67,7 +67,7 @@ public class PlayerSelectable : MonoBehaviour {
 
     void AddMoveOption(GridSquare square)
     {
-        square.mSquare.GetComponent<Highlightable>().setHighlighted(true);
+        square.mSquare.GetComponent<Highlightable>().SetHighlighted(true);
         mMoveOptions.Add(square);
         // remember this and let you click on it
     }

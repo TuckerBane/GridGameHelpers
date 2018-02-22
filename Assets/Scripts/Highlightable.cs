@@ -11,7 +11,7 @@ public class Highlightable : MonoBehaviour {
     public bool mHighlighted = false;
     public float mHighlightEndTime = 0;
 
-    public void setHighlighted(bool highlight, float duration = 0.2f)
+    public void SetHighlighted(bool highlight, float duration = 0.2f)
     {
         if (highlight != mHighlighted)
             mTimeOfLastStatusChange = Time.time;
@@ -33,7 +33,7 @@ public class Highlightable : MonoBehaviour {
     {
         if(mHighlighted && Time.time >= mHighlightEndTime)
         {
-            setHighlighted(false);
+            SetHighlighted(false);
         }
     }
 

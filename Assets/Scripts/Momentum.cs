@@ -20,6 +20,8 @@ public class Momentum : MonoBehaviour {
 
     public IntVec2 mVelocity;
     public bool mApplyVelocityButton = false;
+    public bool mPreditciveVelocityButton = false;
+
     private GridLogic mGridLogicRef;
 
     private OnGrid mMyOnGrid;
@@ -49,6 +51,15 @@ public class Momentum : MonoBehaviour {
             mApplyVelocityButton = false;
             ApplyMomentum();
         }
+        if(mPreditciveVelocityButton)
+        {
+            mPreditciveVelocityButton = false;
+            var oldPos = mMyOnGrid.mPosition;
+            var oldVelocity = mVelocity;
+            ApplyMomentum();
+            mMyOnGrid.mPosition = oldPos;
+            mVelocity = oldVelocity;
+        }
 
     }
 
@@ -63,23 +74,9 @@ public class Momentum : MonoBehaviour {
         IntVec2 nextPos = mMyOnGrid.mPosition;
         do
         {
+            FindObjectOfType<GridLogic>().GetGridSquare(nextPos).mSquare.GetComponent<Highlightable>().SetHighlighted(true,1.0f);
             mMyOnGrid.mPosition = nextPos;
             nextPos = GetNextSquare();
-            // for now bounce off all things equally. Maybe put this logic in GetNextSquare
-            // LATER be able to bounce at an angle
-            /*
-            while (nextPos != IntVec2.Invalid && mGridLogicRef.GetGridSquare(nextPos).mContents != null)
-            {
-                // slow down after you run into things
-                mVelocity -= baseVelocityDelta;
-                // reverse the direction of everything
-
-                baseVelocityDelta *= -1;
-                mVelocityLeftToApply *= -1;
-                mVelocity *= -1;
-                nextPos = GetNextSquare();
-            }
-            */
         } while (nextPos != IntVec2.Invalid);
     }
 
@@ -120,7 +117,7 @@ public class Momentum : MonoBehaviour {
 
         if(mGridLogicRef.GetGridSquare(result).mContents != null)
         {
-
+            result -= delta;
             mDirectionIndex = GetDirectionIndex(delta);
             // diagonal
             if(mDirectionIndex % 2 == 1)

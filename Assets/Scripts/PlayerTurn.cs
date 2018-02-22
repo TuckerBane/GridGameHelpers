@@ -28,7 +28,7 @@ public class PlayerTurn : Turn
             hovered = grid.GetHoveredGridSquare().mSquare;
 
         if (hovered && hovered.GetComponent<Highlightable>())
-            hovered.GetComponent<Highlightable>().setHighlighted(true, 0.01f);
+            hovered.GetComponent<Highlightable>().SetHighlighted(true, 0.01f);
 
         if (Input.GetKeyUp(KeyCode.Mouse0) && hovered && hovered.GetComponent<OnGrid>()) {
             if (hovered)
@@ -40,7 +40,7 @@ public class PlayerTurn : Turn
                 if (mSelectedEntity && mSelectedEntity.GetComponent<PlayerSelectable>() && mSelectedEntity.GetComponent<PlayerSelectable>().mPlayerID == mPlayerID)
                 {
                     if (mSelectedSquare.GetComponent<Highlightable>())
-                        mSelectedSquare.GetComponent<Highlightable>().setHighlighted(true, float.MaxValue);
+                        mSelectedSquare.GetComponent<Highlightable>().SetHighlighted(true, float.MaxValue);
                 }
                 else
                 {
@@ -63,7 +63,7 @@ public class PlayerTurn : Turn
     public void DeselectAll()
     {
         if (mSelectedSquare && mSelectedSquare.GetComponent<Highlightable>())
-            mSelectedSquare.GetComponent<Highlightable>().setHighlighted(false);
+            mSelectedSquare.GetComponent<Highlightable>().SetHighlighted(false);
         mSelectedSquare = null;
         mSelectedEntity = null;
     }
