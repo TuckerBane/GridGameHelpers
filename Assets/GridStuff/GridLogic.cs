@@ -49,7 +49,6 @@ public class GridLogic : MonoBehaviour {
         MakeGrid();
     }
 
-
     public void MakeGrid()
     {
         mGridSqiares = new GridSquare[mXSize, mYSize];
@@ -85,9 +84,6 @@ public class GridLogic : MonoBehaviour {
 
     public void PlaceOnGrid(GameObject thingToPlace, IntVec2 place)
     {
-        int xCheck = place.x;
-        int yCheck = place.y;
-
         place.x = Mathf.Clamp(place.x, 0, mXSize - 1);
         place.y = Mathf.Clamp(place.y, 0, mYSize - 1);
 

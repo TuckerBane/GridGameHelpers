@@ -37,7 +37,7 @@ public class PlayerTurn : Turn
                 mSelectedSquare = hovered;
                 IntVec2 selectedPos = mSelectedSquare.GetComponent<OnGrid>().GetPosition();
                 mSelectedEntity = grid.GetGridContents(selectedPos);
-                if (mSelectedEntity && mSelectedEntity.GetComponent<PlayerSelectable>() && mSelectedEntity.GetComponent<PlayerSelectable>().mPlayerID == mPlayerID)
+                if (mSelectedEntity && mSelectedEntity.GetComponent<BasicUnitLogic>() && mSelectedEntity.GetComponent<BasicUnitLogic>().mPlayerID == mPlayerID)
                 {
                     if (mSelectedSquare.GetComponent<Highlightable>())
                         mSelectedSquare.GetComponent<Highlightable>().SetHighlighted(true, float.MaxValue);

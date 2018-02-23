@@ -13,7 +13,7 @@ public class UnitInfo : ObjectRegistry
         mNextInTurnOrder = null;
         foreach(GameObject unit in mUnits)
         {
-            if (!unit.GetComponent<PlayerSelectable>().mTurnTaken)
+            if (!unit.GetComponent<BasicUnitLogic>().mTurnTaken)
             {
                 mNextInTurnOrder = unit;
                 break;
@@ -25,7 +25,7 @@ public class UnitInfo : ObjectRegistry
     {
         foreach (GameObject unit in mUnits)
         {
-            unit.GetComponent<PlayerSelectable>().mTurnTaken = false;
+            unit.GetComponent<BasicUnitLogic>().ReadyUp();
         }
     }
 }
